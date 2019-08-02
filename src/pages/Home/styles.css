@@ -141,6 +141,7 @@ table tr td {
   display: flex;
   flex-direction: row;
   align-items: center;
+  cursor: pointer;
 }
 
 .estrelados div div img {
@@ -158,4 +159,5 @@ table tr td {
 .estrelados div span {
   flex: 1;
   margin-top: 10px;
+  cursor: pointer;
 }

@@ -68,3 +68,15 @@ ipcMain.on('fechar-app', () => {
 ipcMain.on('minimizar-app', () => {
   mainWindow.minimize();
 });
+
+ipcMain.on('navigate-repo', (event, url) => {
+  mainWindow.loadURL(`file://${__dirname}/pages/Repository/index.html`);
+  mainWindow.webContents.on('did-finish-load', () => {
+    mainWindow.send('carregar-repo', url);
+  });
+  
+})
+
+ipcMain.on('reload-main', event => {
+  mainWindow.loadURL(`file://${__dirname}/pages/Home/index.html`);
+})

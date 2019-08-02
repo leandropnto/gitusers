@@ -8,6 +8,7 @@ const loginSpan = document.querySelector('#login');
 const estrelados = document.querySelector('.estrelados');
 const user = "diego3g";
 
+
 const loadUsers = async (user) => {
   const result = await api.get(`/users/${user}`);
   const {avatar_url, login} = result.data;
@@ -26,6 +27,8 @@ const loadRepositories = async (user) => {
   `).join('\n');
 
   repoBody.innerHTML = template;
+
+  
 }
 
 
@@ -37,10 +40,19 @@ const loadStarred = async (user) => {
 
 
 
-window.onload = (event) => {
+window.onload = async (event) => {
   loadUsers(user);
   loadRepositories(user);
-  loadStarred(user);
+  await loadStarred(user);
+
+  const repository = document.querySelectorAll('.repository');
+  [...repository].forEach(item => {
+    item.addEventListener('click', evt => {
+      const url = item.getAttribute('data-repo');
+      ipcRenderer.send('navigate-repo', url);
+    });
+  }) ;
+
 }
 
 fechar.addEventListener('click', _ => {
@@ -56,9 +68,9 @@ const renderEstrelado = repo => {
     <div>
       <div>
         <img src="${repo.owner.avatar_url}" alt="Avatar">
-        <span>Nome: ${repo.name}</span>
+        <span class="navigate-user">Nome: ${repo.name}</span>
       </div>
-      <span><strong>Descrição:</strong> ${repo.description}</span>
+      <span class="repository" data-repo=${repo.url}><strong>Descrição:</strong> ${repo.description}</span>
     </div>
   `;
 }
